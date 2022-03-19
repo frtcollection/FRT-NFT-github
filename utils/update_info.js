@@ -7,7 +7,6 @@ const {
   description,
   namePrefix,
   network,
-  solanaMetadata,
 } = require(`${basePath}/src/config.js`);
 
 // read json data
@@ -18,7 +17,6 @@ data.forEach((item) => {
   if (network == NETWORK.sol) {
     item.name = `${namePrefix} #${item.edition}`;
     item.description = description;
-    item.creators = solanaMetadata.creators;
   } else {
     item.name = `${namePrefix} #${item.edition}`;
     item.description = description;
@@ -40,7 +38,6 @@ if (network == NETWORK.sol) {
   console.log(`Updated name prefix for images to ===> ${namePrefix}`);
   console.log(
     `Updated creators for images to ===> ${JSON.stringify(
-      solanaMetadata.creators
     )}`
   );
 } else {
