@@ -19,7 +19,6 @@ const {
   text,
   namePrefix,
   network,
-  solanaMetadata,
   gif,
 } = require(`${basePath}/src/config.js`);
 const canvas = createCanvas(format.width, format.height);
@@ -29,9 +28,9 @@ var metadataList = [];
 var attributesList = [];
 var dnaList = new Set();
 const DNA_DELIMITER = "-";
-const HashlipsGiffer = require(`${basePath}/modules/HashlipsGiffer.js`);
+const frtcollectionGiffer = require(`${basePath}/modules/frtcollectionGiffer.js`);
 
-let hashlipsGiffer = null;
+let frtcollectionGiffer = null;
 
 const buildSetup = () => {
   if (fs.existsSync(buildDir)) {
@@ -139,31 +138,9 @@ const addMetadata = (_dna, _edition) => {
     date: dateTime,
     ...extraMetadata,
     attributes: attributesList,
-    compiler: "HashLips Art Engine",
+    compiler: "FRT-NFT-github",
   };
   if (network == NETWORK.sol) {
-    tempMetadata = {
-      //Added metadata for solana
-      name: tempMetadata.name,
-      symbol: solanaMetadata.symbol,
-      description: tempMetadata.description,
-      //Added metadata for solana
-      seller_fee_basis_points: solanaMetadata.seller_fee_basis_points,
-      image: `${_edition}.png`,
-      //Added metadata for solana
-      external_url: solanaMetadata.external_url,
-      edition: _edition,
-      ...extraMetadata,
-      attributes: tempMetadata.attributes,
-      properties: {
-        files: [
-          {
-            uri: `${_edition}.png`,
-            type: "image/png",
-          },
-        ],
-        category: "image",
-        creators: solanaMetadata.creators,
       },
     };
   }
@@ -372,7 +349,7 @@ const startCreating = async () => {
           debugLogs ? console.log("Clearing canvas") : null;
           ctx.clearRect(0, 0, format.width, format.height);
           if (gif.export) {
-            hashlipsGiffer = new HashlipsGiffer(
+            frtcollectionGiffer = new frtcollectionGiffer(
               canvas,
               ctx,
               `${buildDir}/gifs/${abstractedIndexes[0]}.gif`,
@@ -380,7 +357,7 @@ const startCreating = async () => {
               gif.quality,
               gif.delay
             );
-            hashlipsGiffer.start();
+            frtcollectionGiffer.start();
           }
           if (background.generate) {
             drawBackground();
@@ -392,11 +369,11 @@ const startCreating = async () => {
               layerConfigurations[layerConfigIndex].layersOrder.length
             );
             if (gif.export) {
-              hashlipsGiffer.add();
+              frtcollectionGiffer.add();
             }
           });
           if (gif.export) {
-            hashlipsGiffer.stop();
+            frtcollectionGiffer.stop();
           }
           debugLogs
             ? console.log("Editions left to create: ", abstractedIndexes)
